@@ -21,7 +21,7 @@ for repo in `head -1 repolist.txt`; do # TODO: replace with cat
   project=`basename $PWD`
   log=$project.log
   [[ -e $log ]] && rm -v $log
-  git log --author='Patrick' --all --oneline --pretty=tformat:'%ci#%h#%s' >> $log
+  TZ=America/Los_Angeles git log --author='Patrick' --all --oneline --date=local --pretty=tformat:'%cd#%h#%s' >> $log
   while read commit; do
     IFS='#' read datetime sha1 message <<<"$commit"
     DATA=$DATA'{"project":"'$project'","message":"'$message'","datetime":"'$datetime'"},'

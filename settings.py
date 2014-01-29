@@ -8,6 +8,8 @@ MONGO_PORT = 27017
 RESOURCE_METHODS = ['GET', 'POST', 'DELETE']
 ITEM_METHODS = ['GET', 'PATCH', 'PUT', 'DELETE']
 
+DATE_FORMAT = '%c'
+
 DOMAIN = {
   'commits': {
     'schema': {
