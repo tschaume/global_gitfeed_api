@@ -4,7 +4,12 @@
 HOST='127.0.0.1'
 PORT='5000'
 
+# delete all data
+curl -X DELETE http://$HOST:$PORT/commits
+curl -X DELETE http://$HOST:$PORT/projects
+
 # insert projects first
+echo "insert projects ..."
 DATA="["
 for p in `awk -F/ '{print $(NF-1)}' repolist.txt | tr '\n' ' '`; do
   DATA=$DATA'{"name":"'$p'"},'
@@ -13,7 +18,8 @@ DATA=${DATA%?}"]"
 #echo $DATA | python -mjson.tool
 curl -d @<(echo $DATA) -H 'Content-Type: application/json'  http://$HOST:$PORT/projects
 
-# insert commits
+# generate commits data
+echo "generate commits data ..."
 DATA="["
 for repo in `cat repolist.txt`; do
   cd $repo && echo $repo
@@ -27,8 +33,10 @@ for repo in `cat repolist.txt`; do
     IFS='#' read datetime sha1 message <<<"$commit"
     DATA=$DATA'{"project":"'$id'","message":"'$message'","datetime":"'$datetime'"},'
   done < $log
+  [[ -e $log ]] && rm -v $log
 done
 DATA=${DATA%?}"]"
 
+# insert commits
 #echo $DATA | python -mjson.tool
 curl -d @<(echo $DATA) -H 'Content-Type: application/json'  http://$HOST:$PORT/commits
