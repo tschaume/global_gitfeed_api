@@ -5,30 +5,30 @@ HOST='127.0.0.1'
 PORT='5000'
 
 # insert projects first
-DATA="'["
+DATA="["
 for p in `awk -F/ '{print $(NF-1)}' repolist.txt | tr '\n' ' '`; do
   DATA=$DATA'{"name":"'$p'"},'
 done
-DATA=${DATA%?}"]'"
-echo $DATA
-#curl -d $DATA -H 'Content-Type: application/json'  http://$HOST:$PORT/projects
-#exit 1
+DATA=${DATA%?}"]"
+#echo $DATA | python -mjson.tool
+curl -d @<(echo $DATA) -H 'Content-Type: application/json'  http://$HOST:$PORT/projects
 
 # insert commits
-DATA="'["
-for repo in `head -1 repolist.txt`; do # TODO: replace with cat
-  cd $repo
+DATA="["
+for repo in `cat repolist.txt`; do
+  cd $repo && echo $repo
   project=`basename $PWD`
+  json=`curl -s http://$HOST:$PORT/projects/$project | python -mjson.tool`
+  id=`echo $json | grep _id | cut -d\" -f4`
   log=$project.log
   [[ -e $log ]] && rm -v $log
   TZ=America/Los_Angeles git log --author='Patrick' --all --oneline --date=local --pretty=tformat:'%cd#%h#%s' >> $log
   while read commit; do
     IFS='#' read datetime sha1 message <<<"$commit"
-    DATA=$DATA'{"project":"'$project'","message":"'$message'","datetime":"'$datetime'"},'
+    DATA=$DATA'{"project":"'$id'","message":"'$message'","datetime":"'$datetime'"},'
   done < $log
 done
-DATA=${DATA%?}"]'"
+DATA=${DATA%?}"]"
 
-echo $DATA
-
-#curl -d $DATA -H 'Content-Type: application/json'  http://$HOST:$PORT/commits
+#echo $DATA | python -mjson.tool
+curl -d @<(echo $DATA) -H 'Content-Type: application/json'  http://$HOST:$PORT/commits
