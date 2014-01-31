@@ -3,4 +3,5 @@ execfile(activate_this, dict(__file__=activate_this))
 import logging, sys
 logging.basicConfig(stream=sys.stderr)
 sys.path.insert(1,'/home/patrick/public/api.the-huck.com')
+sys.path.insert(1,'/home/patrick/public/api.the-huck.com/api')
 from api import app
