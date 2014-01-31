@@ -11,5 +11,6 @@ itsdangerous==0.22
 py-bcrypt==0.4
 argparse==1.2.1
 pymongo==2.6.3
+requests==2.2.1
 simplejson==3.3.0
 wsgiref==0.1.2
