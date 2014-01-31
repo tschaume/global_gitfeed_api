@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!env/bin/python
 # push to api.the-huck.com
 # if project doesn't exist: create and push all commits in bulk
 # else: push commits involved in current push only
@@ -40,9 +40,11 @@ else:
   print '%s already exists. ok.' % project
 
 # get the payload of commits
+# TODO: other than master branch?
+# TODO: remote name?
 repo = git.Repo(project_dir)
-log = repo.head.log()
-print log[0]
+print repo.iter_commits('github/master..HEAD')
+#'--author=Patrick', '--all', '--oneline', '--date=local', '--pretty=tformat:%cd#%h#%s'
 
 #payload = {''}
 #
