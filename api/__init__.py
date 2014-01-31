@@ -19,6 +19,7 @@ accounts = {
       'type': 'string',
       'minlength': 5,
       'required': True
+      'unique': True
     },
     'password': {
       'type': 'string',
