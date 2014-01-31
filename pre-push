@@ -39,15 +39,21 @@ if requests.get(project_url).status_code != requests.codes.ok:
 else:
   print '%s already exists. ok.' % project
 
-# get the payload of commits
-# TODO: other than master branch?
-# TODO: remote name?
-repo = git.Repo(project_dir)
-print repo.iter_commits('github/master..HEAD')
-#'--author=Patrick', '--all', '--oneline', '--date=local', '--pretty=tformat:%cd#%h#%s'
+# get the project id
+project_id = requests.get(project_url).json().get('_id')
 
-#payload = {''}
-#
+# get the payload of commits
+# TODO: other than master branch? '--all'
+# TODO: get pushing author and select commits. '--author=Patrick' c.author
+# TODO: datetime.datetime '--date=local'
+# TODO: if repo existed: repo.iter_commits('github/master..HEAD') -> remote name?
+repo = git.Repo(project_dir)
+payload = [
+  { 'project': project_id, 'message': c.summary, 'datetime': c.committed_date }
+  for c in repo.iter_commits()
+]
+print payload
+
 ## push payload to API
 #url = '%s/gitcommits' % API
 #headers = {'content-type': 'application/json'}
