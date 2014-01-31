@@ -3,7 +3,7 @@
 # if project doesn't exist: create and push all commits in bulk
 # else: push commits involved in current push only
 
-import requests, json, os, string, sys
+import requests, json, os, string, sys, git
 from requests.auth import HTTPBasicAuth
 
 def prompt():
@@ -22,17 +22,27 @@ password = prompt()
 creds = HTTPBasicAuth(username, password)
 
 # project name & url
-# TODO: symlink works?
-project_dir = os.path.dirname(os.path.realpath(__file__))
+project_dir = os.path.dirname(os.path.abspath(__file__))
 patharr = string.split(project_dir, '/')
-project = patharr[-3] if patharr[-1] == 'hooks' else patharr[-1]
+project = patharr[-1]
+if os.path.join(*patharr[-2:]) == '.git/hooks':
+  project = patharr[-3]
+  project_dir = os.path.join(*patharr[:-2])
 project_url = '%s/%s' % (gitprojects, project)
 print project_url
 
 # check whether project exists, add if not
-if requests.head(project_url).status_code != requests.codes.ok:
+if requests.get(project_url).status_code != requests.codes.ok:
+  print 'adding %s' % project
   r = requests.post(gitprojects, auth=creds, data={'name': project})
   r.raise_for_status()
+else:
+  print '%s already exists. ok.' % project
+
+# get the payload of commits
+repo = git.Repo(project_dir)
+log = repo.head.log()
+print log[0]
 
 #payload = {''}
 #
