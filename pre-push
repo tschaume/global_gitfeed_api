@@ -6,20 +6,14 @@
 import requests, json, os, string, sys, git
 from requests.auth import HTTPBasicAuth
 
-def prompt():
+def prompt(s):
+  print s
   return sys.stdin.readline().strip()
 
 API = '127.0.0.1:5000' # dev
 #API = 'api.the-huck.com' # prod
 gitprojects = 'http://%s/gitprojects' % API
 gitcommits = 'http://%s/gitcommits' % API
-
-# ask for API username and password
-print 'API user: '
-username = prompt()
-print 'password: '
-password = prompt()
-creds = HTTPBasicAuth(username, password)
 
 # project name & url
 project_dir = os.path.dirname(os.path.abspath(__file__))
@@ -34,7 +28,10 @@ print project_url
 # check whether project exists, add if not
 if requests.get(project_url).status_code != requests.codes.ok:
   print 'adding %s' % project
-  r = requests.post(gitprojects, auth=creds, data={'name': project})
+  r = requests.post(
+    gitprojects, data={'name': project},
+    auth=HTTPBasicAuth(prompt('API user: '), prompt('password: '))
+  )
   r.raise_for_status()
 else:
   print '%s already exists. ok.' % project
