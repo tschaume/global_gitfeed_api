@@ -70,12 +70,13 @@ gitprojects = {
 }
 
 settings = {
-  'SERVER_NAME': '127.0.0.1:5000',
+  #'SERVER_NAME': '127.0.0.1:5000', # dev
+  'SERVER_NAME': 'api.the-huck.com', # prod
   'MONGO_HOST': 'localhost',
   'MONGO_PORT': '27017',
   #'MONGO_USERNAME': 'user',
   #'MONGO_PASSWORD': 'user',
-  #'MONGO_DBNAME': 'apitest',
+  'MONGO_DBNAME': 'test',
   'RESOURCE_METHODS': ['GET', 'POST', 'DELETE'],
   'ITEM_METHODS': ['GET', 'PATCH', 'PUT', 'DELETE'],
   'DATE_FORMAT': '%c',
