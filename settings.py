@@ -26,7 +26,7 @@ DOMAIN = {
       }
     }
   },
-  'commits': {
+  'gitcommits': {
     'datasource': {
       'default_sort': [('datetime',1)],
     },
@@ -51,7 +51,7 @@ DOMAIN = {
       },
     }
   },
-  'projects': {
+  'gitprojects': {
     'additional_lookup': {
       'url': 'regex("[\w]+")',
       'field': 'name'
