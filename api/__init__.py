@@ -14,11 +14,13 @@ class BCryptAuth(BasicAuth):
     )
 
 accounts = {
+  'public_methods': [],
+  'public_item_methods': [],
   'schema': {
     'username': {
       'type': 'string',
       'minlength': 5,
-      'required': True
+      'required': True,
       'unique': True
     },
     'password': {
