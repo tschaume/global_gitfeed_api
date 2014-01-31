@@ -13,6 +13,19 @@ PUBLIC_METHODS = ['GET']
 PUBLIC_ITEM_METHODS = ['GET']
 
 DOMAIN = {
+  'accounts': {
+    'schema': {
+      'username': {
+        'type': 'string',
+        'minlength': 5,
+        'required': True
+      },
+      'password': {
+        'type': 'string',
+        'required': True
+      }
+    }
+  },
   'commits': {
     'datasource': {
       'default_sort': [('datetime',1)],
