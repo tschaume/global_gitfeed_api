@@ -12,6 +12,9 @@ DATE_FORMAT = '%c'
 
 DOMAIN = {
   'commits': {
+    'datasource': {
+      'default_sort': [('datetime',1)],
+    },
     'schema': {
       'project': {
         'type': 'objectid',
