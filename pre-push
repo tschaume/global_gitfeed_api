@@ -49,9 +49,11 @@ payload = [
   { 'project': project_id, 'message': c.summary, 'datetime': c.committed_date }
   for c in repo.iter_commits()
 ]
-print payload
+print payload[0]
 
-## push payload to API
-#url = '%s/gitcommits' % API
-#headers = {'content-type': 'application/json'}
-#requests.post(url, data=json.dumps(payload), headers=headers)
+# push payload to API
+headers = {'content-type': 'application/json'}
+requests.post(
+  gitcommits, data=json.dumps(payload), headers=headers,
+  auth=HTTPBasicAuth(prompt('API user: '), prompt('password: '))
+)

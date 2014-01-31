@@ -50,7 +50,7 @@ gitcommits = {
       'required': True,
     },
     'datetime': {
-      'type': 'datetime',
+      'type': 'integer', #'datetime',
       'required': True,
     },
   }
@@ -82,7 +82,7 @@ settings = {
   'MONGO_DBNAME': 'apieve',
   'RESOURCE_METHODS': ['GET', 'POST', 'DELETE'],
   'ITEM_METHODS': ['GET', 'PATCH', 'PUT', 'DELETE'],
-  'DATE_FORMAT': '%c',
+  #'DATE_FORMAT': '%c',
   'PUBLIC_METHODS': ['GET'],
   'PUBLIC_ITEM_METHODS': ['GET'],
   'DOMAIN': {
