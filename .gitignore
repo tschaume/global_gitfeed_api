@@ -1,5 +1,6 @@
 env/*
 *.swp
+log/*
 *.py[cod]
 
 # C extensions
