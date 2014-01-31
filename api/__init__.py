@@ -79,7 +79,7 @@ settings = {
   'MONGO_PORT': '27017',
   #'MONGO_USERNAME': 'user',
   #'MONGO_PASSWORD': 'user',
-  'MONGO_DBNAME': 'test',
+  'MONGO_DBNAME': 'apieve',
   'RESOURCE_METHODS': ['GET', 'POST', 'DELETE'],
   'ITEM_METHODS': ['GET', 'PATCH', 'PUT', 'DELETE'],
   'DATE_FORMAT': '%c',

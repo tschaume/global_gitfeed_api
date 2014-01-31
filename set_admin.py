@@ -1,5 +1,5 @@
-import bcrypt, argparse, requests, json
-from settings import SERVER_NAME
+import bcrypt, argparse, sys
+from pymongo import MongoClient
 
 if __name__ == '__main__':
   # parse command line arguments
@@ -7,14 +7,17 @@ if __name__ == '__main__':
   parser.add_argument("username", help="username")
   parser.add_argument("password", help="password")
   args = parser.parse_args()
-  # api url + endpoint
-  url = 'http://%s/accounts' % SERVER_NAME
-  # delete accounts
-  # TODO: no authentication on api yet (howto init w/o admin account?)
-  print requests.delete(url)
-  # generate bcrypt hashed password
+  # make connection to mongo client and get database
+  client = MongoClient()
+  db = client.apieve
+  # get the database & accounts collection
+  # check whether admin user already exists
+  if db.accounts.find({"username": args.username}).count() > 0:
+    print '%s account already in database!' % args.username
+    sys.exit(0)
+  # generate bcrypt hashed password & insert into collection
   hashed = bcrypt.hashpw(args.password, bcrypt.gensalt())
-  print hashed
-  payload = {'username': args.username, 'password': hashed}
-  headers = {'content-type': 'application/json'}
-  print requests.post(url, data=json.dumps(payload), headers=headers)
+  admin = { "username": args.username, "password": hashed }
+  print db.collection_names()
+  db.accounts.insert(admin)
+  print db.collection_names()
