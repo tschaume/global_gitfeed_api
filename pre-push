@@ -3,4 +3,40 @@
 # if project doesn't exist: create and push all commits in bulk
 # else: push commits involved in current push only
 
-import requests
+import requests, json, os, string, sys
+from requests.auth import HTTPBasicAuth
+
+def prompt():
+  return sys.stdin.readline().strip()
+
+API = '127.0.0.1:5000' # dev
+#API = 'api.the-huck.com' # prod
+gitprojects = 'http://%s/gitprojects' % API
+gitcommits = 'http://%s/gitcommits' % API
+
+# ask for API username and password
+print 'API user: '
+username = prompt()
+print 'password: '
+password = prompt()
+creds = HTTPBasicAuth(username, password)
+
+# project name & url
+# TODO: symlink works?
+project_dir = os.path.dirname(os.path.realpath(__file__))
+patharr = string.split(project_dir, '/')
+project = patharr[-3] if patharr[-1] == 'hooks' else patharr[-1]
+project_url = '%s/%s' % (gitprojects, project)
+print project_url
+
+# check whether project exists, add if not
+if requests.head(project_url).status_code != requests.codes.ok:
+  r = requests.post(gitprojects, auth=creds, data={'name': project})
+  r.raise_for_status()
+
+#payload = {''}
+#
+## push payload to API
+#url = '%s/gitcommits' % API
+#headers = {'content-type': 'application/json'}
+#requests.post(url, data=json.dumps(payload), headers=headers)
