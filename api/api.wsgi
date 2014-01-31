@@ -4,4 +4,4 @@ import logging, sys
 logging.basicConfig(stream=sys.stderr)
 sys.path.insert(1,'/home/patrick/public/api.the-huck.com')
 sys.path.insert(1,'/home/patrick/public/api.the-huck.com/api')
-from api import app
+from api import app as application
