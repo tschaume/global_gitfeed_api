@@ -1,7 +1,5 @@
-#!env/bin/python
+#!/usr/bin/env python
 # push to api.the-huck.com
-# if project doesn't exist: create and push all commits in bulk
-# else: push commits involved in current push only
 
 import requests, json, os, string, sys, git, string
 from requests.auth import HTTPBasicAuth
