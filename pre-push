@@ -6,6 +6,7 @@
 import requests, json, os, string, sys, git
 from requests.auth import HTTPBasicAuth
 from datetime import datetime
+from fnmatch import fnmatch
 
 def prompt(s):
   print s
@@ -27,6 +28,7 @@ project_url = '%s/%s' % (gitprojects, project)
 print project_url
 
 # check whether project exists, add if not
+project_existed = True
 if requests.get(project_url).status_code != requests.codes.ok:
   print 'adding %s' % project
   r = requests.post(
@@ -34,24 +36,26 @@ if requests.get(project_url).status_code != requests.codes.ok:
     auth=HTTPBasicAuth(prompt('API user: '), prompt('password: '))
   )
   r.raise_for_status()
-else:
-  print '%s already exists. ok.' % project
+  project_existed = False
 
 # get the project id
 project_id = requests.get(project_url).json().get('_id')
 
 # get the payload of commits
-# TODO: other than master branch? '--all'
-# TODO: get pushing author and select commits. '--author=Patrick' c.author
-# TODO: datetime.datetime '--date=local'
-# TODO: if repo existed: repo.iter_commits('github/master..HEAD') -> remote name?
+# TODO: other than first remote and active branch? '--all'
 repo = git.Repo(project_dir)
+remote = repo.remotes[0].name
+branch = repo.active_branch
+author = 'Patrick*'
 payload = [
   {
     'project': project_id, 'message': c.summary,
     'datetime': datetime.fromtimestamp(c.committed_date).strftime('%c')
   }
-  for c in repo.iter_commits()
+  for c in repo.iter_commits(
+    '%s/%s..HEAD' %(remote, branch) if project_existed else None
+  )
+  if fnmatch(c.author.name, author)
 ]
 print payload[0]
 
