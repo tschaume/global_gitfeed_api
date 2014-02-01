@@ -1,14 +1,14 @@
 #!/usr/bin/env python
 # push to api.the-huck.com
+# use environment variables for API credentials
 
 import requests, json, os, string, sys, git, string
 from requests.auth import HTTPBasicAuth
 from datetime import datetime
 from fnmatch import fnmatch
 
-def prompt(s):
-  print s
-  return sys.stdin.readline().strip()
+username = os.environ['API_THEHUCK_USER']
+password = os.environ['API_THEHUCK_PWD']
 
 #API = '127.0.0.1:5000' # dev
 API = 'api.the-huck.com' # prod
@@ -31,7 +31,7 @@ if requests.get(project_url).status_code != requests.codes.ok:
   print 'adding %s' % project
   r = requests.post(
     gitprojects, data={'name': project},
-    auth=HTTPBasicAuth(prompt('API user: '), prompt('password: '))
+    auth=HTTPBasicAuth(username, password)
   )
   r.raise_for_status()
   project_existed = False
@@ -65,5 +65,5 @@ payload = [
 headers = {'content-type': 'application/json'}
 requests.post(
   gitcommits, data=json.dumps(payload), headers=headers,
-  auth=HTTPBasicAuth(prompt('API user: '), prompt('password: '))
+  auth=HTTPBasicAuth(username, password)
 )
