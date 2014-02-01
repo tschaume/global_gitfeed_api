@@ -10,8 +10,8 @@ def prompt(s):
   print s
   return sys.stdin.readline().strip()
 
-API = '127.0.0.1:5000' # dev
-#API = 'api.the-huck.com' # prod
+#API = '127.0.0.1:5000' # dev
+API = 'api.the-huck.com' # prod
 gitprojects = 'http://%s/gitprojects' % API
 gitcommits = 'http://%s/gitcommits' % API
 
