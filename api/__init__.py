@@ -57,6 +57,22 @@ gitcommits = {
       'type': 'string',
       'required': True,
     },
+    'deletions': {
+      'type': 'integer',
+      'required': True,
+    },
+    'lines': {
+      'type': 'integer',
+      'required': True,
+    },
+    'insertions': {
+      'type': 'integer',
+      'required': True,
+    },
+    'files': {
+      'type': 'integer',
+      'required': True,
+    },
   }
 }
 

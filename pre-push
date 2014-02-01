@@ -51,7 +51,11 @@ payload = [
   {
     'project': project_id, 'message': c.summary,
     'datetime': datetime.fromtimestamp(c.committed_date).strftime('%c'),
-    'sha1': string.split(c.name_rev)[0]
+    'sha1': string.split(c.name_rev)[0],
+    'deletions': c.stats.total.get('deletions'),
+    'lines': c.stats.total.get('lines'),
+    'insertions': c.stats.total.get('insertions'),
+    'files': c.stats.total.get('files')
   }
   for c in repo.iter_commits(
     '%s/%s..HEAD' %(remote, branch) if project_existed else None
