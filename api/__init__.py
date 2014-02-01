@@ -115,3 +115,11 @@ settings = {
 app = Eve(auth=BCryptAuth, settings=settings)
 Bootstrap(app)
 app.register_blueprint(eve_docs, url_prefix='/docs')
+
+if app.debug is not True:
+  import logging
+  from logging.handlers import RotatingFileHandler
+  outfile = '/home/patrick/public/api.the-huck.com/log/api.log'
+  file_handler = RotatingFileHandler(outfile, maxBytes=1024*1024*100, backupCount=20)
+  file_handler.setLevel(logging.DEBUG)
+  app.logger.addHandler(file_handler)
