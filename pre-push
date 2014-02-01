@@ -5,6 +5,7 @@
 
 import requests, json, os, string, sys, git
 from requests.auth import HTTPBasicAuth
+from datetime import datetime
 
 def prompt(s):
   print s
@@ -46,7 +47,10 @@ project_id = requests.get(project_url).json().get('_id')
 # TODO: if repo existed: repo.iter_commits('github/master..HEAD') -> remote name?
 repo = git.Repo(project_dir)
 payload = [
-  { 'project': project_id, 'message': c.summary, 'datetime': c.committed_date }
+  {
+    'project': project_id, 'message': c.summary,
+    'datetime': datetime.fromtimestamp(c.committed_date).strftime('%c')
+  }
   for c in repo.iter_commits()
 ]
 print payload[0]
