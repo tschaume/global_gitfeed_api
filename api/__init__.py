@@ -39,7 +39,7 @@ gitcommits = {
       'type': 'objectid',
       'required': True,
       'data_relation': {
-        'resource': 'projects',
+        'resource': 'gitprojects',
         'field': '_id',
         'embeddable': True
       }
@@ -50,7 +50,7 @@ gitcommits = {
       'required': True,
     },
     'datetime': {
-      'type': 'integer', #'datetime',
+      'type': 'datetime',
       'required': True,
     },
   }
