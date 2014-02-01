@@ -53,6 +53,10 @@ gitcommits = {
       'type': 'datetime',
       'required': True,
     },
+    'sha1': {
+      'type': 'string',
+      'required': True,
+    },
   }
 }
 

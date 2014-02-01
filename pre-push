@@ -3,7 +3,7 @@
 # if project doesn't exist: create and push all commits in bulk
 # else: push commits involved in current push only
 
-import requests, json, os, string, sys, git
+import requests, json, os, string, sys, git, string
 from requests.auth import HTTPBasicAuth
 from datetime import datetime
 from fnmatch import fnmatch
@@ -50,14 +50,14 @@ author = 'Patrick*'
 payload = [
   {
     'project': project_id, 'message': c.summary,
-    'datetime': datetime.fromtimestamp(c.committed_date).strftime('%c')
+    'datetime': datetime.fromtimestamp(c.committed_date).strftime('%c'),
+    'sha1': string.split(c.name_rev)[0]
   }
   for c in repo.iter_commits(
     '%s/%s..HEAD' %(remote, branch) if project_existed else None
   )
   if fnmatch(c.author.name, author)
 ]
-print payload[0]
 
 # push payload to API
 headers = {'content-type': 'application/json'}
