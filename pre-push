@@ -30,6 +30,7 @@ parser.add_argument("url", help="URL to which the push is being done")
 args = parser.parse_args()
 project = os.path.splitext(os.path.basename(args.url))[0]
 project = string.split(project, ':')[-1]
+project = re.compile(ur'[\W\d]+',re.UNICODE).sub('_',project.strip())
 project_url = '%s/%s' % (gitprojects, project)
 print project_url
 
@@ -44,11 +45,10 @@ if requests.get(project_url).status_code != requests.codes.ok:
   r.raise_for_status()
   project_existed = False
 
-# get the project id
-project_id = requests.get(project_url).json().get('_id')
-
 # get the payload of commits
 # TODO: other than first remote and active branch? '--all'
+print 'determine payload ...'
+project_id = requests.get(project_url).json().get('_id')
 project_dir = os.environ['PWD']
 repo = git.Repo(project_dir)
 remote = repo.remotes[0].name
@@ -71,6 +71,7 @@ payload = [
 ]
 
 # push payload to API
+print 'pushing %r commit(s)' % len(payload)
 headers = {'content-type': 'application/json'}
 requests.post(
   gitcommits, data=json.dumps(payload), headers=headers,
