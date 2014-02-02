@@ -30,7 +30,7 @@ parser.add_argument("url", help="URL to which the push is being done")
 args = parser.parse_args()
 project = os.path.splitext(os.path.basename(args.url))[0]
 project = string.split(project, ':')[-1]
-project = re.compile(ur'[\W\d]+',re.UNICODE).sub('_',project.strip())
+project = re.compile(ur'[\W]+',re.UNICODE).sub('_',project.strip())
 project_url = '%s/%s' % (gitprojects, project)
 print project_url
 
