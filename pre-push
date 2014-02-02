@@ -49,6 +49,7 @@ project_id = requests.get(project_url).json().get('_id')
 
 # get the payload of commits
 # TODO: other than first remote and active branch? '--all'
+project_dir = os.environ['PWD']
 repo = git.Repo(project_dir)
 remote = repo.remotes[0].name
 branch = repo.active_branch
