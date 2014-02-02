@@ -85,7 +85,7 @@ gitprojects = {
     'name': {
       'type': 'string',
       'minlength': 3,
-      'maxlength': 20,
+      'maxlength': 50,
       'required': True,
       'unique': True,
     },
