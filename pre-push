@@ -6,6 +6,7 @@ import requests, json, os, string, sys, git, string
 from requests.auth import HTTPBasicAuth
 from datetime import datetime
 from fnmatch import fnmatch
+from email.utils import formatdate
 
 username = os.environ['API_THEHUCK_USER']
 password = os.environ['API_THEHUCK_PWD']
@@ -48,7 +49,7 @@ author = 'Patrick*'
 payload = [
   {
     'project': project_id, 'message': c.summary,
-    'datetime': datetime.fromtimestamp(c.committed_date).strftime('%c'),
+    'datetime': formatdate(timeval=c.committed_date, localtime=False, usegmt=True),
     'sha1': string.split(c.name_rev)[0],
     'deletions': c.stats.total.get('deletions'),
     'lines': c.stats.total.get('lines'),
