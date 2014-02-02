@@ -2,7 +2,7 @@
 # push to api.the-huck.com
 # use environment variables for API credentials
 
-import requests, json, os, string, sys, git, string, argparse
+import requests, json, os, string, sys, git, string, argparse, re
 from requests.auth import HTTPBasicAuth
 from datetime import datetime
 from fnmatch import fnmatch
