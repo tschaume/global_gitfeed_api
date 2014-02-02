@@ -2,7 +2,7 @@
 # push to api.the-huck.com
 # use environment variables for API credentials
 
-import requests, json, os, string, sys, git, string
+import requests, json, os, string, sys, git, string, argparse
 from requests.auth import HTTPBasicAuth
 from datetime import datetime
 from fnmatch import fnmatch
@@ -22,12 +22,14 @@ gitprojects = 'http://%s/gitprojects' % API
 gitcommits = 'http://%s/gitcommits' % API
 
 # project name & url
-project_dir = os.path.dirname(os.path.abspath(__file__))
-patharr = string.split(project_dir, '/')
-project = patharr[-1]
-if os.path.join(*patharr[-2:]) == '.git/hooks':
-  project = patharr[-3]
-  project_dir = os.path.join(*patharr[:-2])
+parser = argparse.ArgumentParser()
+parser.add_argument(
+  "name", help="Name of the remote to which the push is being done"
+)
+parser.add_argument("url", help="URL to which the push is being done")
+args = parser.parse_args()
+project = os.path.splitext(os.path.basename(args.url))[0]
+project = string.split(project, ':')[-1]
 project_url = '%s/%s' % (gitprojects, project)
 print project_url
 
