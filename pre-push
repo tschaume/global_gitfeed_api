@@ -8,11 +8,16 @@ from datetime import datetime
 from fnmatch import fnmatch
 from email.utils import formatdate
 
+# production config
+API = 'api.the-huck.com'
 username = os.environ['API_THEHUCK_USER']
 password = os.environ['API_THEHUCK_PWD']
 
-#API = '127.0.0.1:5000' # dev
-API = 'api.the-huck.com' # prod
+# development config
+#API = '127.0.0.1:5000'
+#username = password = 'admin'
+
+# API endpoints
 gitprojects = 'http://%s/gitprojects' % API
 gitcommits = 'http://%s/gitcommits' % API
 
