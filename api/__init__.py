@@ -85,8 +85,8 @@ settings = {
   'ITEM_METHODS': ['GET', 'PATCH', 'PUT', 'DELETE'],
   'PUBLIC_METHODS': ['GET'],
   'PUBLIC_ITEM_METHODS': ['GET'],
-  'CACHE_CONTROL': 'max-age=300',
-  'CACHE_EXPIRES': 300,
+  'CACHE_CONTROL': 'max-age=0',
+  'CACHE_EXPIRES': 0,
   'DOMAIN': {
     'accounts': accounts,
     'gitcommits': gitcommits
