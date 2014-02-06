@@ -85,6 +85,7 @@ settings = {
   'ITEM_METHODS': ['GET', 'PATCH', 'PUT', 'DELETE'],
   'PUBLIC_METHODS': ['GET'],
   'PUBLIC_ITEM_METHODS': ['GET'],
+  'CACHE-CONTROL': 'no-cache, max-age=0',
   'PAGINATION': False,
   'DOMAIN': {
     'accounts': accounts,
