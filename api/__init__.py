@@ -36,13 +36,11 @@ gitcommits = {
   },
   'schema': {
     'project': {
-      'type': 'objectid',
+      'type': 'string',
+      'minlength': 3,
+      'maxlength': 50,
       'required': True,
-      'data_relation': {
-        'resource': 'gitprojects',
-        'field': '_id',
-        'embeddable': True
-      }
+      'unique': True,
     },
     'message': {
       'type': 'string',
@@ -76,22 +74,6 @@ gitcommits = {
   }
 }
 
-gitprojects = {
-  'additional_lookup': {
-    'url': 'regex("[\w]+")',
-    'field': 'name'
-  },
-  'schema': {
-    'name': {
-      'type': 'string',
-      'minlength': 3,
-      'maxlength': 50,
-      'required': True,
-      'unique': True,
-    },
-  }
-}
-
 settings = {
   #'SERVER_NAME': '127.0.0.1:5000', # dev
   'SERVER_NAME': 'api.the-huck.com', # prod
@@ -108,8 +90,7 @@ settings = {
   'CACHE_EXPIRES': 300,
   'DOMAIN': {
     'accounts': accounts,
-    'gitcommits': gitcommits,
-    'gitprojects': gitprojects
+    'gitcommits': gitcommits
   }
 }
 
