@@ -18,37 +18,23 @@ password = os.environ['API_THEHUCK_PWD']
 #username = password = 'admin'
 
 # API endpoints
-gitprojects = 'http://%s/gitprojects' % API
 gitcommits = 'http://%s/gitcommits' % API
 
-# project name & url
+# parse arguments
 parser = argparse.ArgumentParser()
 parser.add_argument(
   "name", help="Name of the remote to which the push is being done"
 )
 parser.add_argument("url", help="URL to which the push is being done")
 args = parser.parse_args()
-project = os.path.splitext(os.path.basename(args.url))[0]
-project = string.split(project, ':')[-1]
-project = re.compile(ur'[\W]+',re.UNICODE).sub('_',project.strip())
-project_url = '%s/%s' % (gitprojects, project)
-print project_url
-
-# check whether project exists, add if not
-project_existed = True
-if requests.get(project_url).status_code != requests.codes.ok:
-  print 'adding %s' % project
-  r = requests.post(
-    gitprojects, data={'name': project},
-    auth=HTTPBasicAuth(username, password)
-  )
-  r.raise_for_status()
-  project_existed = False
 
 # get the payload of commits
 # TODO: other than first remote and active branch? '--all'
-print 'determine payload ...'
-project_id = requests.get(project_url).json().get('_id')
+print 'determine api payload ...'
+project = os.path.splitext(os.path.basename(args.url))[0]
+project = string.split(project, ':')[-1]
+project = re.compile(ur'[\W]+',re.UNICODE).sub('_',project.strip())
+r = requests.get(gitcommits + '?where={"project":"' + project + '"}')
 project_dir = os.environ['PWD']
 repo = git.Repo(project_dir)
 remote = repo.remotes[0].name
@@ -56,7 +42,7 @@ branch = repo.active_branch
 author = 'Patrick*'
 payload = [
   {
-    'project': project_id, 'message': c.summary,
+    'project': project, 'message': c.summary,
     'datetime': formatdate(timeval=c.committed_date, localtime=False, usegmt=True),
     'sha1': string.split(c.name_rev)[0],
     'deletions': c.stats.total.get('deletions'),
@@ -65,7 +51,7 @@ payload = [
     'files': c.stats.total.get('files')
   }
   for c in repo.iter_commits(
-    '%s/%s..HEAD' %(remote, branch) if project_existed else None
+    '%s/%s..HEAD' %(remote, branch) if r.json()["_items"] else None
   )
   if fnmatch(c.author.name, author)
 ]
