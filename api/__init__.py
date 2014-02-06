@@ -40,7 +40,6 @@ gitcommits = {
       'minlength': 3,
       'maxlength': 50,
       'required': True,
-      'unique': True,
     },
     'message': {
       'type': 'string',
