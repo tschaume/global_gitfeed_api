@@ -87,6 +87,7 @@ settings = {
   'PUBLIC_ITEM_METHODS': ['GET'],
   'CACHE_CONTROL': 'max-age=0',
   'CACHE_EXPIRES': 0,
+  'PAGINATION': False,
   'DOMAIN': {
     'accounts': accounts,
     'gitcommits': gitcommits
