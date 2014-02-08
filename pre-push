@@ -30,6 +30,7 @@ args = parser.parse_args()
 
 # get the payload of commits
 # TODO: other than default remote and branch? '--all'
+# NOTE: remove projects via DELETE curl requests, not in MongoDB itself!
 print 'determine api payload ...'
 project = os.path.splitext(os.path.basename(args.url))[0]
 project = string.split(project, ':')[-1]
