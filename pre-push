@@ -29,16 +29,16 @@ parser.add_argument("url", help="URL to which the push is being done")
 args = parser.parse_args()
 
 # get the payload of commits
-# TODO: other than first remote and active branch? '--all'
+# TODO: other than default remote and branch? '--all'
 print 'determine api payload ...'
 project = os.path.splitext(os.path.basename(args.url))[0]
 project = string.split(project, ':')[-1]
 project = re.compile(ur'[\W]+',re.UNICODE).sub('_',project.strip())
-r = requests.get(gitcommits + '?where={"project":"' + project + '"}')
+pars = {'where': ''.join(['{"project":"', project, '"}'])}
+r = requests.get(gitcommits, params=pars)
+shas = [ c['sha1'] for c in r.json()['_items'] ]
 project_dir = os.environ['PWD']
 repo = git.Repo(project_dir)
-remote = repo.remotes[0].name
-branch = repo.active_branch
 author = 'Patrick*'
 payload = [
   {
@@ -50,10 +50,10 @@ payload = [
     'insertions': c.stats.total.get('insertions'),
     'files': c.stats.total.get('files')
   }
-  for c in repo.iter_commits(
-    '%s/%s..HEAD' %(remote, branch) if r.json()["_items"] else None
+  for c in repo.iter_commits() if (
+    fnmatch(c.author.name, author) and
+    string.split(c.name_rev)[0] not in shas
   )
-  if fnmatch(c.author.name, author)
 ]
 
 # push payload to API
